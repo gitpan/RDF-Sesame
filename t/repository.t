@@ -109,14 +109,14 @@ SKIP: {
     # try a real, remote upload
     $repo->clear;
     $c = $repo->upload_uri(
-        uri    => 'http://palmcluster.org/michael/foaf.rdf', 
+        uri    => 'http://palmcluster.org/michael/rdf-sesame.rdf', 
         format => 'rdfxml'
     );
-    cmp_ok($c, '==', 49, 'uploaded remote foaf.rdf');
+    cmp_ok($c, '==', 48, 'uploaded remote foaf.rdf');
     is($repo->errstr, '', '  no error message');
 
     $c = $repo->upload_uri(
-        uri    => 'http://palmcluster.org/michael/foaf.rdf', 
+        uri    => 'http://palmcluster.org/michael/rdf-sesame.rdf', 
         format => 'A BAD FORMAT'
     );
     cmp_ok($c, '==', 0, 'upload with a bad type');

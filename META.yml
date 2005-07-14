@@ -1,6 +1,6 @@
 ---
 name: RDF-Sesame
-version: 0.10
+version: 0.11
 author:
   - Michael Hendricks <michael@palmcluster.org>
 abstract: Interact with Sesame RDF servers
@@ -15,7 +15,7 @@ requires:
 provides:
   RDF::Sesame:
     file: lib/RDF/Sesame.pm
-    version: 0.10
+    version: 0.11
   RDF::Sesame::Connection:
     file: lib/RDF/Sesame/Connection.pm
   RDF::Sesame::Repository:

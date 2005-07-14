@@ -4,7 +4,7 @@ use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.10";
+our $VERSION = "0.11";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
