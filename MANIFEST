@@ -11,6 +11,7 @@ lib/RDF/Sesame/Response.pm
 lib/RDF/Sesame/Connection.pm
 lib/RDF/Sesame/Repository.pm
 t/connection.t
+t/pod.t
 t/repository.t
 t/response.t
 t/strip.t
@@ -18,3 +19,4 @@ t/table.t
 t/template.t
 t/dc.rdf
 t/error.rdf
+SIGNATURE    Added here by Module::Build

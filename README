@@ -1,4 +1,4 @@
-RDF-Sesame version 0.11
+RDF-Sesame version 0.12
 ========================
 
 DESCRIPTION
@@ -16,7 +16,7 @@ wouldn't know if your installation actually works.
 The tests will DESTROY ANY DATA in the repository you provide.  It is
 recommended that you specifically create a repository to use with the
 tests or use the default mem-rdf-db repository that comes with a default
-Sesame installation.  The repository must have inferencing disabled.
+Sesame installation.  The repository must have inferencing DISABLED.
 RDF::Sesame works correctly when repositories have inferencing
 enabled, but the tests are written on the assumption that Sesame will
 not add extra triples to the store.
@@ -40,11 +40,11 @@ should substitute.
                using the default, in-memory repository, this would
                be 'mem-rdf-db'
 
-There seems to be a problem with the Native repository under Sesame
-1.2.0.  It's possible that this is a bug in Sesame 1.2.0 and I'm
-working with OpenRDF to try and resolve the issue.  If the tests
-fail on a native repository under 1.2.0, try using some other
-type of repository instead.
+KNOWN ISSUES
+
+There is a problem with the implementation of Native repositories in
+Sesame 1.2.0.  The RDF::Sesame tests will fail on a native repository
+under that Sesame version. The bug is fixed in Sesame 1.2.1
 
 INSTALLATION
 

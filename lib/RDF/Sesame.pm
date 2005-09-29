@@ -4,7 +4,7 @@ use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.11";
+our $VERSION = "0.12";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
@@ -154,6 +154,23 @@ sub connect {
     shift @_;  # remove the class name
     RDF::Sesame::Connection->new(@_);
 }
+
+=head1 COMPATIBILITY
+
+The following table indicates RDF::Sesame's compatibility with different
+versions of Sesame and different sail implementations.
+
+  Sesame 1.2.2 : native - OK
+                 memory - OK
+  Sesame 1.2.1 : native - OK
+                 memory - OK
+  Sesame 1.2   : native - FAIL (known bug)
+                 memory - OK
+  Sesame 1.1.3 : native - OK
+                 memory - OK
+
+I've not personally tested Seame versions earlier than 1.1.3 but they may work.
+
 
 =head1 SEE ALSO
 
