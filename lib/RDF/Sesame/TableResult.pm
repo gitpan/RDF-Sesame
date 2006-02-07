@@ -7,9 +7,11 @@ use base qw(Data::Table);
 
 use Carp;
 
+our $VERSION = '0.13';
+
 =head1 NAME
 
-RDF::Sesame::TableResult - A class representing results from a select query
+RDF::Sesame::TableResult - Results from a select query
 
 =head1 DESCRIPTION
 

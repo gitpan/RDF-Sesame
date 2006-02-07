@@ -7,9 +7,10 @@ my $build = Module::Build->new
       sign            => 1,
       requires        => {
           'Carp'           => 0,
+          'Time::HiRes'    => 0,
+          'Test::More'     => 0.31,
           'Data::Table'    => 0,
           'LWP::UserAgent' => 0,
-          'Test::More'     => 0.31,
           'URI'            => 0,
           'XML::Simple'    => 0,
       },

@@ -2,11 +2,16 @@
 
 package RDF::Sesame::Repository;
 
+use strict;
+use warnings;
+
 use Carp;
+
+our $VERSION = '0.13';
 
 =head1 NAME
 
-RDF::Sesame::Repository - A class representing a repository on a Sesame server.
+RDF::Sesame::Repository - A repository on a Sesame server
 
 =head1 DESCRIPTION
 

@@ -1,12 +1,30 @@
-Revision history for Perl module RDF::Sesame
+---
+version : 0.13
+date    :
+changes :
+    - added test coverage statistics to the POD
+    - added compatibility statement for Sesame 1.2.3 and 1.2.4
+    - added rudimentary debugging/profiling support: RDFSESAME_DEBUG
+    - corrected the connect() call in the SYNOPSIS
+    - added a test for POD coverage
+    - "use strict" and "use warnings" in all modules
 
-0.12 Thu Sep 29 17:31:30 UTC 2005
+---
+version : 0.12
+date    : Thu Sep 29 17:31:30 UTC 2005
+changes : 
     - highlighted that inferencing must be disabled to run tests
     - added compatibility table
     - added a module signature
 
-0.11 Thu Jul 14 15:58:24 UTC 2005
+---
+version : 0.11
+date    : Thu Jul 14 15:58:24 UTC 2005
+changes :
     - corrected the repository.t test
 
-0.10 Tue Jul 5 22:27:10 UTC 2005
-	- original version; created by ExtUtils::ModuleMaker 0.32
+---
+version : 0.10
+date    : Tue Jul 5 22:27:10 UTC 2005
+changes :
+    - original version

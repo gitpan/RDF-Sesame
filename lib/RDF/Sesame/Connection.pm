@@ -1,15 +1,21 @@
 # vim modeline vim600: set foldmethod=marker :
 package RDF::Sesame::Connection;
 
+use strict;
+use warnings;
+
 use Carp;
 use LWP::UserAgent;
+use Time::HiRes qw( gettimeofday tv_interval );
 
 use RDF::Sesame;
 use RDF::Sesame::Repository;
 
+our $VERSION = '0.13';
+
 =head1 NAME
 
-RDF::Sesame::Connection - A class representing a connection to a Sesame server.
+RDF::Sesame::Connection - A connection to a Sesame server
 
 =head1 DESCRIPTION
 
@@ -166,6 +172,25 @@ can be used to determine whether the command succeeded or failed.
 
 =cut
 
+# TODO use XML::SAX instead of XML::Simple (details follow)
+# The basic implementation might be something like this
+#
+#   my ($self, $cmd) = @_;
+#   my $handler_class = $handlers{$cmd};
+#   my $handler = $handler_class->new();
+#   $parser = XML::SAX::ParserFactory( Handler => $handler );
+#   $self->{ua}->post(
+#       ...,
+#       ':content_cb' => sub { $parser->parse_string(...) }
+#   );
+#   return $handler->response();
+#
+# I should be able to implement the above if I make the new response
+# objects implement the current Response interface.  Once that works,
+# I can change the way the old code uses the response objects
+# (if that's still necessary).
+
+{ my $count = 0;
 sub command {
     my $self = shift;
 
@@ -185,6 +210,7 @@ sub command {
     # make the request. Either GET or POST depending on the command
     my $cmd_uri = $self->{server} . $cmd;
     my $r;  # the server's HTTP::Response
+    my $start = [ gettimeofday() ];
     if( $cmd eq 'listRepositories' or $cmd eq 'logout' ) {
         # send a request using HTTP-GET
         $r = $self->{ua}->get($cmd_uri, %$params);
@@ -197,8 +223,16 @@ sub command {
         );
     }
 
-    # return an RDF::Sesame::Response object
-    return RDF::Sesame::Response->new($r);
+    # make an RDF::Sesame::Response object for return
+    my $response = RDF::Sesame::Response->new($r);
+
+    if ( $ENV{RDFSESAME_DEBUG} ) {
+        my $elapsed = int( 1000 * tv_interval($start) );  # in milliseconds
+        printf STDERR "Command %d : Ran $cmd in $elapsed ms\n", $count++;
+    }
+
+    return $response;
+}
 }
 
 # This method should really only be called by

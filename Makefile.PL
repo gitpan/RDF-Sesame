@@ -11,6 +11,7 @@ WriteMakefile
                            'URI' => 0,
                            'LWP::UserAgent' => 0,
                            'XML::Simple' => 0,
+                           'Time::HiRes' => 0,
                            'Data::Table' => 0,
                            'Carp' => 0
                          }

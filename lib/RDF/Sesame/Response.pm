@@ -1,11 +1,14 @@
 package RDF::Sesame::Response;
 
+use strict;
+use warnings;
 use XML::Simple;
+
+our $VERSION = '0.13';
 
 =head1 NAME
 
-RDF::Sesame::Response - A class representing the response of a Sesame
-server to a command.
+RDF::Sesame::Response - A response of a Sesame server to a command
 
 =head1 DESCRIPTION
 
@@ -113,6 +116,7 @@ sub new {
 
             $xml =~ s#<tuple>(.*?)</tuple>#_fix_tuple($1)#siegx;
 
+            # TODO call a custom XML::SAX parser instead
             $self->{parsed} = XMLin(
                 $xml,
                 ForceArray => [

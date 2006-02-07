@@ -1,10 +1,13 @@
 package RDF::Sesame;
 
+use strict;
+use warnings;
+
 use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.12";
+our $VERSION = "0.13";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
@@ -26,7 +29,7 @@ RDF::Sesame - Interact with Sesame RDF servers
     host      => "openrdf.org",
     port      => 80
     directory => "sesame",
-    user      => "testuser",
+    username  => "testuser",
     password  => "opensesame"
  ) or die "Couldn't connect to Sesame : $RDF::Sesame::errstr\n";
  
@@ -155,11 +158,29 @@ sub connect {
     RDF::Sesame::Connection->new(@_);
 }
 
+=head1 CONFIGURATION AND ENVIRONMENT
+ 
+RDF::Sesame can generate very limited debugging/profiling output.  By setting
+the environment variable C<RDFSESAME_DEBUG> to a true value, each request to
+the Sesame server will generate a message on STDERR.  Here is a short sample:
+
+   Command 0 : Ran login in 30 ms
+   Command 1 : Ran evaluateTableQuery in 45 ms
+   Command 2 : Ran evaluateTableQuery in 120 ms
+
+The time value generated with each message is the number of milliseconds it
+took to process the command including network time, database processing time
+and response processing time.
+
 =head1 COMPATIBILITY
 
 The following table indicates RDF::Sesame's compatibility with different
 versions of Sesame and different sail implementations.
 
+  Sesame 1.2.4 : native - OK
+                 memory - OK
+  Sesame 1.2.3 : native - OK
+                 memory - OK
   Sesame 1.2.2 : native - OK
                  memory - OK
   Sesame 1.2.1 : native - OK
@@ -171,6 +192,28 @@ versions of Sesame and different sail implementations.
 
 I've not personally tested Seame versions earlier than 1.1.3 but they may work.
 
+=head1 COVERAGE
+
+Test coverage results provided by L<Devel::Cover>
+
+ ---------------------------- ------ ------ ------ ------ ------ ------
+ File                           stmt   bran   cond    sub    pod  total
+ ---------------------------- ------ ------ ------ ------ ------ ------
+ lib/RDF/Sesame.pm             100.0    n/a    n/a  100.0  100.0  100.0
+ lib/RDF/Sesame/Connection.pm  100.0  100.0  100.0  100.0   80.0   99.3
+ lib/RDF/Sesame/Repository.pm   95.1   98.5    n/a  100.0   88.9   96.2
+ lib/RDF/Sesame/Response.pm    100.0  100.0    n/a  100.0   83.3   98.0
+ ...RDF/Sesame/TableResult.pm  100.0   96.7    n/a  100.0   80.0   98.2
+ Total                          98.1   98.6  100.0  100.0   84.6   97.8
+ ---------------------------- ------ ------ ------ ------ ------ ------
+
+=head1 DEPENDENCIES
+ 
+A list of all the other modules that this module relies upon, including any
+restrictions on versions, and an indication whether these required modules are
+part of the standard Perl distribution, part of the module's distribution,
+or must be installed separately.
+ 
 
 =head1 SEE ALSO
 
@@ -188,6 +231,14 @@ I've not personally tested Seame versions earlier than 1.1.3 but they may work.
 
 Michael Hendricks <michael@palmcluster.org>
 
+=head1 LICENSE AND COPYRIGHT
+ 
+Copyright (c) 2006 Michael Hendricks (<michael@palmcluster.org>). All rights
+reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
 =cut
 
-return 1;
+1;
