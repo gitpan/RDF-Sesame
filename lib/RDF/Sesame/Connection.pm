@@ -11,7 +11,7 @@ use Time::HiRes qw( gettimeofday tv_interval );
 use RDF::Sesame;
 use RDF::Sesame::Repository;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 =head1 NAME
 
@@ -210,16 +210,19 @@ sub command {
     # make the request. Either GET or POST depending on the command
     my $cmd_uri = $self->{server} . $cmd;
     my $r;  # the server's HTTP::Response
+    my $content_cb = delete $params->{':content_cb'};
     my $start = [ gettimeofday() ];
     if( $cmd eq 'listRepositories' or $cmd eq 'logout' ) {
         # send a request using HTTP-GET
-        $r = $self->{ua}->get($cmd_uri, %$params);
+        $r = $self->{ua}->get( $cmd_uri, %$params );
     } else {
         # send a request using HTTP-POST ('multipart/form-data' encoded)
         $r = $self->{ua}->post(
             $cmd_uri,
+            {},  # empty form since the real stuff is in 'Content'
             Content_Type => 'form-data',
             Content      => $params,
+            ( $content_cb ? (':content_cb' => $content_cb) : () )
         );
     }
 

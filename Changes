@@ -1,17 +1,25 @@
 ---
+version : 0.14
+date    : 2006-04-17T20:46:10Z
+changes :
+    - updated the year on copyright statements
+    - added extract() to RDF::Sesame::Repository
+    - added construct() to RDF::Sesame::Repository (rt.cpan.org #13600)
+
+---
 version : 0.13
-date    :
+date    : 2006-02-07T09:45:46Z
 changes :
     - added test coverage statistics to the POD
     - added compatibility statement for Sesame 1.2.3 and 1.2.4
-    - added rudimentary debugging/profiling support: RDFSESAME_DEBUG
+    - added rudimentary debugging/profiling support (RDFSESAME_DEBUG)
     - corrected the connect() call in the SYNOPSIS
     - added a test for POD coverage
-    - "use strict" and "use warnings" in all modules
+    - add "use strict" and "use warnings" to all modules
 
 ---
 version : 0.12
-date    : Thu Sep 29 17:31:30 UTC 2005
+date    : 2005-09-29T17:31:30Z
 changes : 
     - highlighted that inferencing must be disabled to run tests
     - added compatibility table
@@ -19,12 +27,12 @@ changes :
 
 ---
 version : 0.11
-date    : Thu Jul 14 15:58:24 UTC 2005
+date    : 2005-07-14T15:58:24Z
 changes :
     - corrected the repository.t test
 
 ---
 version : 0.10
-date    : Tue Jul 5 22:27:10 UTC 2005
+date    : 2005-07-05T22:27:10Z
 changes :
     - original version

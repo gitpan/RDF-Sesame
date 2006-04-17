@@ -14,32 +14,35 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 bd0ccc54d1b2d042b6640fc8980e2e5fb20906bf Build.PL
-SHA1 0806b0fdb9ddcdaf784640af407c2743999fa590 Changes
+SHA1 0bf58bed82b5284e3390b6db244e8927167ed60b Build.PL
+SHA1 8bd6db4b45c5d3517f7979c48d99e65b98bf6560 Changes
 SHA1 f235ba4160673bcb7c9d58c2f09dbc7fc0efadea LICENSE
-SHA1 25e77894ec58c15872e56dcf580c4d81d1568fe1 MANIFEST
-SHA1 e8990c3261088dc7b524771a1a9536d678e33897 META.yml
+SHA1 5a99e1e7625c8ac184a6968502ce6971b13bb02a MANIFEST
+SHA1 9dd2b377eadec8dcfcd2458e12cf91618d8ab08f META.yml
 SHA1 8106948f690600c4cacb2f5bf05c8568d8c48539 Makefile.PL
-SHA1 e4b6fc55a23295c9a3a13b25145eb1191bc128fc README
-SHA1 6f43c979b1122c30410539c0bb9ee31e5c758331 lib/RDF/Sesame.pm
-SHA1 9be646319f74804f2d949e73b36369bd34b8ab47 lib/RDF/Sesame/Connection.pm
-SHA1 746ecc1c43726c728d85bbe26eb98ebb5172ecf2 lib/RDF/Sesame/Repository.pm
-SHA1 483b7b41c4ddc005b00325e21c0dee7cffcbb981 lib/RDF/Sesame/Response.pm
-SHA1 839a92452d3511a281c0b1f08e1887a3149d82cb lib/RDF/Sesame/TableResult.pm
+SHA1 52614d173d1e012e8b404a56c831a903265d76d0 README
+SHA1 6197b8913febbd0aadc58a31a869a6263622aaa7 lib/RDF/Sesame.pm
+SHA1 7389f9aaf53cafa824faa63a6a18b4ab50f18835 lib/RDF/Sesame/Connection.pm
+SHA1 e21abd791dda25ae79e6bece546c33967b15bab9 lib/RDF/Sesame/Repository.pm
+SHA1 fd22f0d7a91b25036518f03a4efacc9e5db917e2 lib/RDF/Sesame/Response.pm
+SHA1 a61fd742282382f664d33e62b66f4822ba95d3ab lib/RDF/Sesame/TableResult.pm
 SHA1 b668d74e7f6fca58bc627f5e2ed14137ee39bcb6 t/10-connection.t
 SHA1 aeb670eb9bb9752ed9a241d4c197c35daebe8e4e t/20-response.t
 SHA1 853d61742a109ec1a6a3f80c0f83c29f93d641d2 t/30-repository.t
+SHA1 84d2457eb6d4ef3e021c84d0a21464951779a942 t/31-repository-extract.t
+SHA1 8fae00ee4f89fb2de71500e6e0179a4d6cb2dad4 t/32-repository-construct.t
 SHA1 aa0c1a000508335b23619053116b1a4a3d900356 t/40-strip.t
 SHA1 5aebb8f19ec62ec7eb0bf7bc769e1db8bc4668a0 t/50-table.t
 SHA1 bef8b8a655c8074d6606de28a0a9869a1a5605a8 t/98-debug.t
 SHA1 fffdfe336ac94311ba1f8ce22efe8f09036a6f9a t/99-pod-coverage.t
 SHA1 e9c6a5881fc60173fbc8d479c1afd2ce3b43bef1 t/99-pod.t
+SHA1 748141663dcee1457b4c43b5e9126466272ed883 t/dc-construct.ttl
 SHA1 cf90ed6559b00da907a0cdaace27b467e4f7f300 t/dc.rdf
 SHA1 c112cbbb000efe2b9c8c0b0b8b754ba63c5a50c5 t/error.rdf
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
+Version: GnuPG v1.4.2.2 (GNU/Linux)
 
-iD8DBQFD6M212SxmMIGsLdwRAhf2AJ9RlVPE5/gso7QN/1eU6bFAPGvmTACePcuo
-NRgS4XpNEnJBDlRgCphP2Zc=
-=fz/o
+iD8DBQFEQ/9M2SxmMIGsLdwRAkM+AJwPqX+AJI6zsenR0QaqXjnjCO2HGwCePbst
+vjoyeeWxOlIvrk+RcZHWJhU=
+=8TX0
 -----END PGP SIGNATURE-----

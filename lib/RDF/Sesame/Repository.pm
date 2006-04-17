@@ -7,7 +7,7 @@ use warnings;
 
 use Carp;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 =head1 NAME
 
@@ -22,6 +22,303 @@ straightforward to add CONSTRUCT functionality.  If you do it, send me a
 patch ;-)
 
 =head1 METHODS
+
+=head2 construct ( %opts )
+
+Evaluates a construct query and returns the RDF serialization of the resulting
+RDF graph.  A minimal invocation looks something like:
+
+    my $q = qq(
+        CONSTRUCT {Parent} ex:hasChild {Child}
+        FROM {Child} ex:hasParent {Parent}
+        USING NAMESPACE
+            ex = <http://example.org/things#>
+    );
+    my $rdf = $repo->construct(
+        query  => $q,
+        format => 'turtle',
+    );
+
+If an error occurs during the construction, an exception is thrown.  This is
+different from some RDF::Sesame methods which return C<undef>.
+
+=head3 format
+
+    Required: Yes
+
+Indicates the RDF serialization format that the Sesame server should return.
+Acceptable values are 'rdfxml', 'turtle' and 'ntriples'.
+
+=head3 language
+
+    Default: SeRQL
+
+Specifies the language in which the construct query is written.  This is only
+included for forwards-compatibility since the only query language supported by
+Sesame is SeRQL.
+
+=head3 output
+
+    Default: undef
+
+Indicates where the RDF serialization should be placed.  The default value of
+C<undef> means that the serialization should simply be returned as the value
+of the C<construct> method.
+
+If the value is a filehandle, the serialization is written to that filehandle.
+The filehandle must already be open for writing.  Otherwise, the value is
+taken to be a filename which is opened for writing (clobbering existing
+contents) and the serialization is written to the file.
+
+=head3 query
+
+    Required : Yes
+
+The text of the construct query.
+
+=cut
+
+sub construct {
+    my $self = shift;
+
+    # establish some sensible defaults
+    my %defaults = (
+        language => 'SeRQL',
+    );
+    my %opts = ( %defaults, @_ );
+
+    # validate arguments and install options
+    croak "No serialization format specified" if !$opts{format};
+    croak "No query specified"                if !$opts{query};
+
+    # set up the output filehandle
+    my $output_fh;
+    my $output = q{};
+    if ( !defined( $opts{output} ) ) {
+        open($output_fh, '>', \$output);
+    }
+    elsif( ref($opts{output}) eq 'GLOB' ) {
+        $output_fh = $opts{output};
+    }
+    else {
+        open $output_fh, '>', $opts{output}
+            or croak "construct can't open $opts{output} for writing: $!";
+    }
+
+    # construct RDF from Sesame
+    my $r = $self->command(
+        'evaluateGraphQuery',
+        {
+            serialization => $opts{format},
+            queryLanguage => $opts{language},
+            query         => $opts{query},
+            ':content_cb' => sub { print $output_fh $_[0] },
+        }
+    );
+    croak $r->errstr() if !$r->success();
+    close $output_fh;
+
+    return if defined $opts{output};
+    return $output;
+}
+
+=head2 extract ( %opts )
+
+Extract an RDF representation of all the triples in the repository.  The only
+required option is L</format> which specifies the serialization format of the
+resulting RDF.  The minimal method invocation looks like
+
+    my $rdf = $repo->extract( format => 'turtle' )
+
+where C<$rdf> is a reference to a scalar containing the serialization of all
+the triples in the repository.  The streaming results returned by Sesame are
+handled appropriately so that memory usage in minimized.  If the output is
+sent to a file (see L</output>), only one "chunk" is held in memory at a time
+(subject to caching by your OS).  The serialization may also be compressed (or
+otherwise processed) as it's being streamed from the server (see
+L</compress>).
+
+Error handling is done differently in this method than in other methods in
+L<RDF::Sesame>.  Namely, if an error occurs, an exception is thrown (rather
+than returning undef and setting C<errstr()>.  Eventually, I'd like all
+methods to behave this way.
+
+=head3 compress
+
+    Default: 'none'
+
+Indicates how the RDF serialization returned by the Sesame server should be
+compressed (or otherwise processed) before it's sent to the designated output
+destination (see L</output)>.  The default value of C<none> indicates that no
+compression or processing should be performed.  The value C<gz> indicates that
+L<Compress::Zlib> should be used to compress the serialization into the gzip
+file format.
+
+One may also specify a hash reference as the value of this option.  The hash
+reference should contain the keys 'init', 'content', and 'finish'.  The value
+for each key should be a subroutine reference which will be called during the
+extraction process.
+
+The 'init' coderef is called before any data is received from Sesame.  It
+receives an output filehandle as its sole argument and should return a
+"context" value which will be passed to the 'content' and 'finish' callbacks.
+The context may be any value, but objects and hashrefs seem to be the most
+useful.
+
+The 'content' coderef is called once for each chunk of data returned from the
+Sesame server.  It receives the context, the output filehandle and a
+serialization chunk as arguments.  Its return value is ignored.
+
+The 'finish' coderef is called after all data has been received from the
+server and after the last call to the 'content' coderef has completed.
+'finish' receives the context and the output filehandle as arguments.  Its
+return value is ignored.
+
+Here is a short example of using callbacks to implement gzip compression (of
+course gzip compression is already implemented by specifying 'gz' as the
+compression value):
+
+    my $rdf_gz = $repo->extract(
+        format   => 'turtle',
+        compress => {
+            init => sub {
+                my ($fh) = @_;
+                require Compress::Zlib;
+                binmode $fh;
+                my $gz = Compress::Zlib::gzopen( $fh, 'wb' );
+                return $gz;    # our context object
+            },
+            content => sub {
+                my ( $context, $fh, $content ) = @_;
+                $context->gzwrite($content);
+            },
+            finish => sub {
+                my ( $context, $fh ) = @_;
+                $context->gzclose();
+            },
+        },
+    );
+
+=head3 format
+
+    Required: Yes
+
+Indicates the RDF serialization format that the Sesame server should return.
+Acceptable values are 'rdfxml', 'turtle' and 'ntriples'.
+
+=head3 options
+
+    Default: []
+
+Specifies various boolean extraction options provided by Sesame for extracting
+RDF from the repository.  Acceptable options are 'niceOutput', 'explicitOnly',
+'data', 'schema'.  The values of these options have the meanings indicated in
+the "User Guide for Sesame 1.2" section 8.1.6.  See
+L<http://www.openrdf.org/doc/sesame/users/ch08.html#d0e3026>.
+
+=head3 output
+
+    Default: undef
+
+Indicates where the RDF serialization (including processing done according to
+the 'compress' argument) should be placed.  The default value of C<undef>
+means that the serialization should simply be returned as the value of the
+C<extract> method.
+
+If the value is a filehandle, the serialization is written to that filehandle.
+The filehandle must already be open for writing.  Otherwise, the value is
+taken to be a filename which is opened for writing (clobbering existing
+contents) and the serialization is written to the file.
+
+=cut
+
+sub extract {
+    my $self = shift;
+
+    # establish some sensible defaults
+    my %defaults = (
+        compress => 'none',
+        options  => [],
+    );
+    my %opts = ( %defaults, @_ );
+
+    # validate arguments and install options
+    croak "No serialization format specified" if !$opts{format};
+    my %boolean_options;
+    for my $option ( @{ $opts{options} } ) {
+        $boolean_options{$option} = 'on';
+    }
+
+    # set up the output filehandle
+    my $output_fh;
+    my $output = q{};
+    if ( !defined( $opts{output} ) ) {
+        open($output_fh, '>', \$output);
+    }
+    elsif( ref($opts{output}) eq 'GLOB' ) {
+        $output_fh = $opts{output};
+    }
+    else {
+        open $output_fh, '>', $opts{output}
+            or croak "extract can't open $opts{output} for writing: $!";
+    }
+
+    # find and initialize the 'compress' handlers
+    my $handlers = ref $opts{compress}
+                 ? $opts{compress}
+                 : $self->_get_compress_handlers()->{ $opts{compress} }
+                 ;
+    my $context = $handlers->{init}->($output_fh);
+
+    # extract RDF from Sesame
+    my $r = $self->command(
+        'extractRDF',
+        {
+            serialization => $opts{format},
+            %boolean_options,
+            ':content_cb' => sub {
+                $handlers->{content}->($context, $output_fh, $_[0]);
+            },
+        }
+    );
+    croak $r->errstr() if !$r->success();
+
+    $handlers->{finish}->($context, $output_fh);
+    close $output_fh;
+
+    return if defined $opts{output};
+    return $output;
+}
+
+sub _get_compress_handlers {
+    return {
+        none => {
+            init => sub { return },
+            content => sub {
+                my (undef, $fh, $content) = @_;
+                print $fh $content;
+            },
+            finish => sub { return },
+        },
+        gz => {
+            init => sub {
+                my ($fh) = @_;
+                require Compress::Zlib;
+                binmode $fh;
+                my $gz = Compress::Zlib::gzopen( $fh, 'wb' );
+                return $gz;    # our context object
+            },
+            content => sub {
+                my ( $context, $fh, $content ) = @_;
+                $context->gzwrite($content);
+            },
+            finish => sub {
+                my ( $context, $fh ) = @_;
+                $context->gzclose();
+            },
+        },
+    };
+}
 
 =head2 query_language ( [ $language ] )
 

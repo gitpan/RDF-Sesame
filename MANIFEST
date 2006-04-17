@@ -13,11 +13,14 @@ lib/RDF/Sesame/Repository.pm
 t/10-connection.t
 t/20-response.t
 t/30-repository.t
+t/31-repository-extract.t
+t/32-repository-construct.t
 t/40-strip.t
 t/50-table.t
 t/98-debug.t
 t/99-pod.t
 t/99-pod-coverage.t
 t/dc.rdf
+t/dc-construct.ttl
 t/error.rdf
 SIGNATURE    Added here by Module::Build

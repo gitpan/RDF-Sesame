@@ -1,4 +1,4 @@
-RDF-Sesame version 0.13
+RDF-Sesame version 0.14
 ========================
 
 DESCRIPTION
@@ -67,7 +67,7 @@ DEPENDENCIES
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2005 by Michael Hendricks
+Copyright (C) 2005-2006 by Michael Hendricks
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.4 or,

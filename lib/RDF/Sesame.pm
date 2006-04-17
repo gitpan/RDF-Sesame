@@ -7,7 +7,7 @@ use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.13";
+our $VERSION = "0.14";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
@@ -233,7 +233,7 @@ Michael Hendricks <michael@palmcluster.org>
 
 =head1 LICENSE AND COPYRIGHT
  
-Copyright (c) 2006 Michael Hendricks (<michael@palmcluster.org>). All rights
+Copyright (c) 2005-2006 Michael Hendricks (<michael@palmcluster.org>). All rights
 reserved.
 
 This program is free software; you can redistribute it and/or modify it

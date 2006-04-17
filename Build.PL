@@ -8,11 +8,13 @@ my $build = Module::Build->new
       requires        => {
           'Carp'           => 0,
           'Time::HiRes'    => 0,
-          'Test::More'     => 0.31,
           'Data::Table'    => 0,
           'LWP::UserAgent' => 0,
           'URI'            => 0,
           'XML::Simple'    => 0,
+      },
+      build_requires => {
+          'Test::More'     => 0.31,
       },
       create_makefile_pl => 'traditional',
     );
