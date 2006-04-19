@@ -7,7 +7,7 @@ use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.14";
+our $VERSION = "0.15";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
@@ -196,16 +196,16 @@ I've not personally tested Seame versions earlier than 1.1.3 but they may work.
 
 Test coverage results provided by L<Devel::Cover>
 
- ---------------------------- ------ ------ ------ ------ ------ ------
- File                           stmt   bran   cond    sub    pod  total
- ---------------------------- ------ ------ ------ ------ ------ ------
- lib/RDF/Sesame.pm             100.0    n/a    n/a  100.0  100.0  100.0
- lib/RDF/Sesame/Connection.pm  100.0  100.0  100.0  100.0   80.0   99.3
- lib/RDF/Sesame/Repository.pm   95.1   98.5    n/a  100.0   88.9   96.2
- lib/RDF/Sesame/Response.pm    100.0  100.0    n/a  100.0   83.3   98.0
- ...RDF/Sesame/TableResult.pm  100.0   96.7    n/a  100.0   80.0   98.2
- Total                          98.1   98.6  100.0  100.0   84.6   97.8
- ---------------------------- ------ ------ ------ ------ ------ ------
+ ----------------------------------- ------ ------ ------ ------ ------ ------
+ File                                  stmt   bran   cond    sub   time  total
+ ----------------------------------- ------ ------ ------ ------ ------ ------
+ lib/RDF/Sesame.pm                    100.0    n/a    n/a  100.0    1.1  100.0
+ lib/RDF/Sesame/Connection.pm         100.0  100.0  100.0  100.0   20.5  100.0
+ lib/RDF/Sesame/Repository.pm          96.7   95.9    n/a  100.0    9.0   96.7
+ lib/RDF/Sesame/Response.pm           100.0  100.0    n/a  100.0   46.4  100.0
+ lib/RDF/Sesame/TableResult.pm         91.2   82.4    n/a  100.0   23.0   88.7
+ Total                                 96.2   92.2  100.0  100.0  100.0   95.4
+ ----------------------------------- ------ ------ ------ ------ ------ ------
 
 =head1 DEPENDENCIES
  

@@ -1,15 +1,14 @@
 use warnings;
 use strict;
 
-use Test::More tests => 6;
-
-BEGIN { use_ok('RDF::Sesame'); }
+use Test::More tests => 11;
+use RDF::Sesame;
 
 SKIP: {
     my $uri    = $ENV{SESAME_URI};
     my $r_name = $ENV{SESAME_REPO};
-    skip 'SESAME_URI environment not set', 5  unless $uri;
-    skip 'SESAME_REPO environment not set', 5 unless $r_name;
+    skip 'SESAME_URI environment not set', 11  unless $uri;
+    skip 'SESAME_REPO environment not set', 11 unless $r_name;
 
     my $conn = RDF::Sesame->connect( uri => $uri );
 
@@ -22,13 +21,14 @@ SKIP: {
 
     $repo->upload_uri( 'file:t/dc.rdf' );
 
-    my $serql = <<"";
-        SELECT uri, literal
-        FROM {dc:title} uri            {"1999-07-02"};
-                        dcterms:issued {literal}
-        USING NAMESPACE
-            dc = <http://purl.org/dc/elements/1.1/>,
-            dcterms = <http://purl.org/dc/terms/>
+    my $serql = q{
+        SELECT
+            "a",
+            "b"@en-us,
+            "c"^^<http://example.com/#foo>,
+            <http://example.org>,
+            _:b123
+    };
 
     ###### Verify the behavior of the 'strip' option
 
@@ -37,45 +37,86 @@ SKIP: {
     my @row = $res->each;
     is_deeply(
         \@row,
-        [ '<http://purl.org/dc/terms/issued>', '"1999-07-02"' ],
+        [
+            q{"a"},
+            q{"b"@en-us},
+            q{"c"^^<http://example.com/#foo>},
+            q{<http://example.org>},
+            q{_:b123},
+        ],
         'default'
     );
 
-    ### literals
-    $res = $repo->select( query=>$serql, strip=>'literals' );
-    ok( eq_array(
-            [ $res->each ],
-            [ '<http://purl.org/dc/terms/issued>', '1999-07-02' ]
-        ),
-        'literals'
-    );
+    # test strip in each of the table results formats
+    for my $format ( '', 'xml', 'binary' ) {
+        ### literals
+        $res = $repo->select(
+            query=>$serql,
+            strip=>'literals',
+            ( $format ? (format=>$format) : () ),
+        );
+        is_deeply(
+            [ $res->each() ],
+            [
+                q{a},
+                q{b},
+                q{c},
+                q{<http://example.org>},
+                q{_:b123},
+            ],
+            "$format: literals"
+        );
 
-    ### urirefs
-    $res = $repo->select( query=>$serql, strip=>'urirefs' );
-    ok( eq_array(
+        ### urirefs
+        $res = $repo->select(
+            query=>$serql,
+            strip=>'urirefs',
+            ( $format ? (format=>$format) : () ),
+        );
+        is_deeply(
             [ $res->each ],
-            [ 'http://purl.org/dc/terms/issued', '"1999-07-02"' ]
-        ),
-        'urirefs'
-    );
+            [
+                q{"a"},
+                q{"b"@en-us},
+                q{"c"^^<http://example.com/#foo>},
+                q{http://example.org},
+                q{_:b123},
+            ],
+            "$format: urirefs"
+        );
 
-    ### urirefs
-    $res = $repo->select( query=>$serql, strip=>'all' );
-    ok( eq_array(
+        ### all
+        $res = $repo->select(
+            query=>$serql,
+            strip=>'all',
+            ( $format ? (format=>$format) : () ),
+        );
+        is_deeply(
             [ $res->each ],
-            [ 'http://purl.org/dc/terms/issued', '1999-07-02' ]
-        ),
-        'all'
-    );
+            [
+                q{a},
+                q{b},
+                q{c},
+                q{http://example.org},
+                q{_:b123},
+            ],
+            "$format: all"
+        );
+    }
 
     ###### Verify setting the default for strip
 
     $repo = $conn->open( id => $r_name, strip => 'all');
     $res = $repo->select($serql);
-    ok( eq_array(
-            [ $res->each ],
-            [ 'http://purl.org/dc/terms/issued', '1999-07-02' ]
-        ),
+    is_deeply(
+        [ $res->each ],
+        [
+            q{a},
+            q{b},
+            q{c},
+            q{http://example.org},
+            q{_:b123},
+        ],
         'setting default through open()'
     );
 

@@ -9,8 +9,9 @@ plan skip_all => 'SESAME_URI environment not set'   if !$uri;
 plan skip_all => 'SESAME_REPO environment not set'  if !$r_name;
 
 # do we have the necessary testing modules?
-eval q{ use Test::Output; 1 }
-    or plan skip_all => "Test::Output required to test debugging output";
+eval q{ use Test::Output; 1 };
+plan skip_all => "Test::Output required to test debugging output"
+    if $@ || $ENV{MINIMAL_TEST};
 my $conn = RDF::Sesame->connect( uri => $uri )
     or plan skip_all => "Connection failure for $uri: $RDF::Sesame::errstr";
 

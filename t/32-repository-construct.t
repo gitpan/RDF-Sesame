@@ -4,17 +4,18 @@ use Test::More;
 
 use RDF::Sesame;
 
-plan tests => 6;
+plan tests => 7;
 
 SKIP: {
 
     # do we have all that's needed to run this test?
     my $uri    = $ENV{SESAME_URI};
     my $r_name = $ENV{SESAME_REPO};
-    skip 'SESAME_URI environment not set', 6  unless $uri;
-    skip 'SESAME_REPO environment not set', 6 unless $r_name;
+    skip 'SESAME_URI environment not set', 7  unless $uri;
+    skip 'SESAME_REPO environment not set', 7 unless $r_name;
     eval "use Test::RDF";
-    skip "Test::RDF needed for testing construct queries", 6 if $@;
+    skip "Test::RDF needed for testing construct queries", 7
+        if $@ || $ENV{MINIMAL_TEST};
 
     my $conn = RDF::Sesame->connect( uri => $uri );
     my $repo = $conn->open($r_name);
@@ -81,8 +82,12 @@ SKIP: {
     # try some error conditions
     eval { $repo->construct( query => $query ) };
     like( $@, qr/No serialization format specified/, 'no construct format' );
+
     eval { $repo->construct( format => 'turtle' ) };
     like( $@, qr/No query specified/, 'no construct query' );
+
+    eval { $repo->construct( format => 'turtle', query => 'not valid' ) };
+    like( $@, qr/MALFORMED_QUERY/, 'invalid construct query' );
 
     ok($repo->clear, 'clearing repository');
 }

@@ -15,34 +15,42 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 0bf58bed82b5284e3390b6db244e8927167ed60b Build.PL
-SHA1 8bd6db4b45c5d3517f7979c48d99e65b98bf6560 Changes
+SHA1 4c3e47593aa5168dba33db0158b1b3277f8c7b65 Changes
 SHA1 f235ba4160673bcb7c9d58c2f09dbc7fc0efadea LICENSE
-SHA1 5a99e1e7625c8ac184a6968502ce6971b13bb02a MANIFEST
-SHA1 9dd2b377eadec8dcfcd2458e12cf91618d8ab08f META.yml
+SHA1 254afec4bdcd420340025313776278cc7c8a7bae MANIFEST
+SHA1 bc34005d3f1f46df6d791a265fc86698aaf49df3 META.yml
 SHA1 8106948f690600c4cacb2f5bf05c8568d8c48539 Makefile.PL
-SHA1 52614d173d1e012e8b404a56c831a903265d76d0 README
-SHA1 6197b8913febbd0aadc58a31a869a6263622aaa7 lib/RDF/Sesame.pm
-SHA1 7389f9aaf53cafa824faa63a6a18b4ab50f18835 lib/RDF/Sesame/Connection.pm
-SHA1 e21abd791dda25ae79e6bece546c33967b15bab9 lib/RDF/Sesame/Repository.pm
-SHA1 fd22f0d7a91b25036518f03a4efacc9e5db917e2 lib/RDF/Sesame/Response.pm
-SHA1 a61fd742282382f664d33e62b66f4822ba95d3ab lib/RDF/Sesame/TableResult.pm
+SHA1 0f344d2ee6695432a59b13a988fa78b0f2e5b393 README
+SHA1 c594e13e81a6dd806dfa694477258d8e5d82edfb bench-parse.pl
+SHA1 9a3d8c40d25e6c2a9eb10b1eb575ef357059363b lib/RDF/Sesame.pm
+SHA1 12441e3f6a83cdc2a86f3ca8a0e29af4cb064c71 lib/RDF/Sesame/Connection.pm
+SHA1 cbbeb9fd04bcea23809fbd014e7e42bea120f582 lib/RDF/Sesame/Repository.pm
+SHA1 d1ba93a5d30bd076c1f04718b95081c1ca7fce38 lib/RDF/Sesame/Response.pm
+SHA1 be6ac608e20f76508579f7a379af290b27cfada1 lib/RDF/Sesame/TableResult.pm
+SHA1 84e5df8c402cc54a4bd6a4ce9df1f1ae9a5883f0 t/00-load.t
 SHA1 b668d74e7f6fca58bc627f5e2ed14137ee39bcb6 t/10-connection.t
 SHA1 aeb670eb9bb9752ed9a241d4c197c35daebe8e4e t/20-response.t
 SHA1 853d61742a109ec1a6a3f80c0f83c29f93d641d2 t/30-repository.t
-SHA1 84d2457eb6d4ef3e021c84d0a21464951779a942 t/31-repository-extract.t
-SHA1 8fae00ee4f89fb2de71500e6e0179a4d6cb2dad4 t/32-repository-construct.t
-SHA1 aa0c1a000508335b23619053116b1a4a3d900356 t/40-strip.t
-SHA1 5aebb8f19ec62ec7eb0bf7bc769e1db8bc4668a0 t/50-table.t
-SHA1 bef8b8a655c8074d6606de28a0a9869a1a5605a8 t/98-debug.t
-SHA1 fffdfe336ac94311ba1f8ce22efe8f09036a6f9a t/99-pod-coverage.t
-SHA1 e9c6a5881fc60173fbc8d479c1afd2ce3b43bef1 t/99-pod.t
+SHA1 8355aa407c9781d66949bf0f7aad97e7db9242f2 t/31-repository-extract.t
+SHA1 fb7e318891f9ed10c02a894e80c99eb1b47ceeb0 t/32-repository-construct.t
+SHA1 6d4fb080ce113be74a0730efaf98df514ffe276d t/40-strip.t
+SHA1 6a4a13b5b3c689e9cd797dc93e7ac655414f0a9c t/50-table.t
+SHA1 15472ec6d954ac4df388085f1a4aa245f350cbc9 t/98-debug.t
+SHA1 af4abdf1f572926a6fd51462f323482302335339 t/99-pod-coverage.t
+SHA1 340f1c27064df29dba13941d302bab28604dcbc5 t/99-pod.t
+SHA1 7648d71d802c6910eb1eb4cc9f8d1843acd02e8d t/a.bin
+SHA1 d75c75059b27b2bbdcac112e88e3532bdee5d767 t/a.xml
+SHA1 759ca7d55bcefeca6795d2b3c02fb7d1804c90bc t/b.bin
+SHA1 6ccee0e4bc9912be8af6a9cfb39d112ac33b1a36 t/b.xml
+SHA1 2b5601edee2d166a423535f44335d48cb850fdfd t/c.bin
+SHA1 db50c4915717ae6d6f4b32bafeafdc961d66ce03 t/c.xml
 SHA1 748141663dcee1457b4c43b5e9126466272ed883 t/dc-construct.ttl
 SHA1 cf90ed6559b00da907a0cdaace27b467e4f7f300 t/dc.rdf
 SHA1 c112cbbb000efe2b9c8c0b0b8b754ba63c5a50c5 t/error.rdf
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.2.2 (GNU/Linux)
 
-iD8DBQFEQ/9M2SxmMIGsLdwRAkM+AJwPqX+AJI6zsenR0QaqXjnjCO2HGwCePbst
-vjoyeeWxOlIvrk+RcZHWJhU=
-=8TX0
+iD8DBQFERo6j2SxmMIGsLdwRAu/SAJ9NQINkcWlI8rLQvL0g2hps31pdCACffOjG
+6RwPxLeyuUquuNwlfuxbcxc=
+=PpVs
 -----END PGP SIGNATURE-----

@@ -1,4 +1,14 @@
 ---
+version : 0.15
+date    : 2006-04-19T19:24:13Z
+changes :
+    - >
+      added support for binary table results format which parses
+      *much* (50-500 times) faster than the XML results format."
+    - use binary table results format by default
+    - minor code cleanup
+
+---
 version : 0.14
 date    : 2006-04-17T20:46:10Z
 changes :

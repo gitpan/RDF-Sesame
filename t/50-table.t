@@ -1,14 +1,14 @@
-use Test::More tests => 17;
-
+use strict;
+use warnings;
+use Test::More tests => 18;
+use RDF::Sesame;
 my $debug = $ENV{DEBUG};
-
-BEGIN { use_ok('RDF::Sesame'); }
 
 SKIP: {
     my $uri    = $ENV{SESAME_URI};
     my $r_name = $ENV{SESAME_REPO};
-    skip 'SESAME_URI environment not set', 16  unless $uri;
-    skip 'SESAME_REPO environment not set', 16 unless $r_name;
+    skip 'SESAME_URI environment not set', 18  unless $uri;
+    skip 'SESAME_REPO environment not set', 18 unless $r_name;
 
     my $conn = RDF::Sesame->connect( uri => $uri );
 
@@ -21,6 +21,13 @@ SKIP: {
 
     $repo->upload_uri( 'file:t/dc.rdf' );
 
+    # run a query with no results
+    my $t = $repo->select(q(
+        SELECT x FROM {x} <http://example.com> {x}
+    ));
+    isa_ok($t, 'RDF::Sesame::TableResult', 'query result');
+    ok( !$t->has_rows(), 'result has no rows' );
+
     # run a simple query
     $t = $repo->select('
         select x
@@ -30,7 +37,7 @@ SKIP: {
 
     # validate has_rows
 
-    ok($t->has_rows, 'result has rows');
+    ok( $t->has_rows(), 'result has rows' );
 
     ################### each() #####################
     my @first = $t->each;
@@ -116,7 +123,7 @@ SKIP: {
     @vals = (
         [ '"Title"@en-us', undef ]
     );
-    ok(eq_array(\@vals, $t->rowRefs), 'rowRefs with NULL' );
+    is_deeply($t->rowRefs(), \@vals, 'rowRefs with NULL' );
 
     ################# empty result ###################
 
@@ -139,7 +146,7 @@ SKIP: {
     @vals = (
         [ '"1999-07-02"^^<http://www.w3.org/2001/XMLSchema#date>' ]
     );
-    is_deeply(\@vals, $t->rowRefs, 'rowRefs with datatype' );
+    is_deeply($t->rowRefs, \@vals, 'rowRefs with datatype' );
 
     # don't leave our junk lying around
     $repo->clear;
