@@ -7,7 +7,7 @@ use warnings;
 
 use Carp;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 sub construct {
     my $self = shift;
@@ -239,11 +239,16 @@ sub upload_data {
     }
 
     foreach ( @{$r->parsed_xml->{status}} ) {
-        if( $_->{msg} =~ /^Data is correct and contains (\d+) statement/ ) {
-            return $1;
+        my $triple_count;
+        if( $_->{msg} =~ /^Data is correct and contains ([\d,]+) statement/ ) {
+            $triple_count = $1;
         }
-        if( $_->{msg} =~ /^Processed (\d+) statement/ ) {
-            return $1;
+        if( $_->{msg} =~ /^Processed ([\d,]+) statement/ ) {
+            $triple_count = $1;
+        }
+        if (defined $triple_count) {
+            $triple_count =~ s{,}{}xmsg;
+            return $triple_count;
         }
     }
 
@@ -261,6 +266,7 @@ sub upload_uri {
         uri => '',
         format => 'rdfxml',
         verify => 1,
+        server_file => 0,
     );
 
     # set the defaults for any option we weren't given
@@ -284,7 +290,7 @@ sub upload_uri {
     }
 
     # handle the "file:" URI scheme
-    if( $opts{uri} =~ /^file:/ ) {
+    if( $opts{uri} =~ /^file:/ && !$opts{server_file} ) {
         require LWP::Simple;
         my $content = LWP::Simple::get($opts{uri});
         unless( defined $content ) {
@@ -315,11 +321,16 @@ sub upload_uri {
     }
 
     foreach ( @{$r->parsed_xml->{status}} ) {
-        if( $_->{msg} =~ /^Data is correct and contains (\d+) statement/ ) {
-            return $1;
+        my $triple_count;
+        if( $_->{msg} =~ /^Data is correct and contains ([\d,]+) statement/ ) {
+            $triple_count = $1;
         }
-        if( $_->{msg} =~ /^Processed (\d+) statement/ ) {
-            return $1;
+        elsif( $_->{msg} =~ /^Processed ([\d,]+) statement/ ) {
+            $triple_count = $1;
+        }
+        if (defined $triple_count) {
+            $triple_count =~ s{,}{}xmsg;
+            return $triple_count;
         }
     }
 
@@ -636,13 +647,42 @@ is 'binary' indicates that the "Binary RDF Table Results" format should be
 used.  The value 'xml' indicates that Sesame's XML results format should be
 used.
 
-Benchmarks show that the binary results format parses 40 to 400 times faster
-than the XML format (depending on whether you use a C-based or a pure Perl XML
-parser).  Because the performance with binary results is so much better,
-binary results are the default.  There shouldn't be much reason to change this
-parameter.  See C<bench-parse.pl> that came with this distribution for a
-simple benchmarking program.  C<t/a.*>, C<t/b.*> and C<t/c.*> in the
-distribution are samples against which the benchmarks can be run.
+My own simple benchmarks show that the binary results format parses 40 to 400
+times faster than the XML format (depending on whether you use a C-based or a
+pure Perl XML parser).  The binary results format is also significantly
+smaller in size than the XML format, so it's particularly useful in
+bandwidth-constrained environments. Because the performance with binary
+results is so much better, binary results are the default.  See
+C<bench-parse.pl> that came with this distribution for a simple benchmarking
+program.  C<t/a.*>, C<t/b.*> and C<t/c.*> in the distribution are samples
+against which the benchmarks can be run.
+
+There are three circumstances in which the binary results format should not be
+used.  These limitations are a result of limitations in the binary format:
+This list is current as of Sesame 1.2.4:
+
+=over
+
+=item *
+
+Values (literals and column names) with a null byte are not decoded correctly
+by RDF::Sesame.  See L<http://www.openrdf.org/issues/browse/SES-244> for
+background.
+
+=item *
+
+Values outside of the Unicode Basic Multilingual Plane are not decoded
+correctly.  See
+L<http://en.wikipedia.org/w/index.php?title=UTF-8&oldid=49058202#Java> for
+background.
+
+=item *
+
+Values longer than 65,536 bytes are not encoded correctly in the binary
+results format.  See L<http://www.openrdf.org/issues/browse/SES-245> for
+details.
+
+=back
 
 =head3 language
 
@@ -745,12 +785,13 @@ Default : true
 
 =head2 upload_uri ( %opts )
 
-Uploads the triples from the resource located at a given URI.  This
-method supports the "file:" URI scheme.  If a file URI is specified,
-LWP::Simple is used to retrieve the contents of the URI.  Those contents
-are then passed as the 'data' option to upload_data().  For any
-URI scheme besides "file:", the Sesame server will retrieve the data on
-its own.
+Uploads the triples from the resource located at a given URI.  This method
+supports the "file:" URI scheme.  If the L</server_file> option is specified,
+the URI is interpreted as a file stored directly on the Sesame server;
+otherwise, LWP::Simple is used to retrieve the contents off the local machine.
+Those contents are then passed as the 'data' option to upload_data().  For any
+URI scheme besides "file:", the Sesame server will retrieve the data on its
+own.
 
 The C<%opts> parameter provides a list of named options to use when uploading
 the data.  If a single scalar is provided instead of C<%opts>, the scalar
@@ -773,6 +814,14 @@ The format of the data located at the given URI.  This can be one of 'rdfxml',
 'ntriples' or 'turtle'.
 
 Default: 'rdfxml'
+
+=head3 server_file
+
+If true, forces 'file:' URIs to be fetched by the Sesame server instead of
+fetched off the local machine.  This allows one to upload an RDF file that is
+stored directly on the Sesame server.
+
+Default: 0
 
 =head3 base
 

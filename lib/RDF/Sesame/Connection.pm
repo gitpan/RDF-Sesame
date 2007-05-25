@@ -11,7 +11,7 @@ use Time::HiRes qw( gettimeofday tv_interval );
 use RDF::Sesame;
 use RDF::Sesame::Repository;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 =head1 NAME
 
@@ -325,7 +325,7 @@ sub new {
 
 =head1 AUTHOR
 
-Michael Hendricks <michael@palmcluster.org>
+Michael Hendricks <michael@ndrix.com>
 
 =cut
 

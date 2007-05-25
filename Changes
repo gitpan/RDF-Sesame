@@ -1,4 +1,11 @@
 ---
+version : 0.16
+date    : 2007-05-25T15:58:29Z
+changes :
+    - Documented some of the limits of using the binary results format
+    - Correct triple count when uploading more than 999 triples.  Thanks Benno Blumenthal.
+    - Add server_file option to upload_uri.  Thanks Benno Blumenthal.
+---
 version : 0.15
 date    : 2006-04-19T19:24:13Z
 changes :

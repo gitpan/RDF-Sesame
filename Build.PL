@@ -4,7 +4,6 @@ use Module::Build;
 my $build = Module::Build->new
     ( module_name     => 'RDF::Sesame',
       license         => 'perl',
-      sign            => 1,
       requires        => {
           'Carp'           => 0,
           'Time::HiRes'    => 0,

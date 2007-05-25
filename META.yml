@@ -1,10 +1,12 @@
 ---
 name: RDF-Sesame
-version: 0.15
+version: 0.16
 author:
-  - 'Michael Hendricks <michael@palmcluster.org>'
+  - 'Michael Hendricks <michael@ndrix.com>'
 abstract: Interact with Sesame RDF servers
 license: perl
+resources:
+  license: http://dev.perl.org/licenses/
 requires:
   Carp: 0
   Data::Table: 0
@@ -17,17 +19,20 @@ build_requires:
 provides:
   RDF::Sesame:
     file: lib/RDF/Sesame.pm
-    version: 0.15
+    version: 0.16
   RDF::Sesame::Connection:
     file: lib/RDF/Sesame/Connection.pm
-    version: 0.15
+    version: 0.16
   RDF::Sesame::Repository:
     file: lib/RDF/Sesame/Repository.pm
-    version: 0.15
+    version: 0.16
   RDF::Sesame::Response:
     file: lib/RDF/Sesame/Response.pm
-    version: 0.15
+    version: 0.16
   RDF::Sesame::TableResult:
     file: lib/RDF/Sesame/TableResult.pm
-    version: 0.15
-generated_by: Module::Build version 0.2611
+    version: 0.16
+generated_by: Module::Build version 0.2806
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

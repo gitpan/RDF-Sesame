@@ -5,6 +5,7 @@ WriteMakefile
           'PL_FILES' => {},
           'INSTALLDIRS' => 'site',
           'NAME' => 'RDF::Sesame',
+          'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/RDF/Sesame.pm',
           'PREREQ_PM' => {
                            'Test::More' => '0.31',

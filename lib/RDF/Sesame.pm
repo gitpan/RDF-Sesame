@@ -7,7 +7,7 @@ use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.15";
+our $VERSION = "0.16";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
@@ -177,6 +177,8 @@ and response processing time.
 The following table indicates RDF::Sesame's compatibility with different
 versions of Sesame and different sail implementations.
 
+  Sesame 1.2.6 : native - OK
+                 memory - OK
   Sesame 1.2.4 : native - OK
                  memory - OK
   Sesame 1.2.3 : native - OK
@@ -190,7 +192,7 @@ versions of Sesame and different sail implementations.
   Sesame 1.1.3 : native - OK
                  memory - OK
 
-I've not personally tested Seame versions earlier than 1.1.3 but they may work.
+I've not personally tested Sesame versions earlier than 1.1.3 but they may work.
 
 =head1 COVERAGE
 
@@ -227,13 +229,18 @@ or must be installed separately.
 
 =back
 
+=head1 ACKNOWLEDGEMENTS
+
+Southwest Counseling Service for sponsoring the initial development
+L<http://swcounseling.org>.
+
 =head1 AUTHOR
 
-Michael Hendricks <michael@palmcluster.org>
+Michael Hendricks <michael@ndrix.com>
 
 =head1 LICENSE AND COPYRIGHT
  
-Copyright (c) 2005-2006 Michael Hendricks (<michael@palmcluster.org>). All rights
+Copyright (c) 2005-2006 Michael Hendricks (<michael@ndrix.com>). All rights
 reserved.
 
 This program is free software; you can redistribute it and/or modify it

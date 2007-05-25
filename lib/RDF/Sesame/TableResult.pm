@@ -7,7 +7,7 @@ use base qw( Data::Table );
 
 use Carp;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 #
 # The $response parameter is an RDF::Sesame::Response object.

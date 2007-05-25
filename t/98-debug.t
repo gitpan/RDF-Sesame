@@ -48,7 +48,7 @@ output_like(
 output_like(
     sub {
         $repo->upload_uri(
-            uri    => 'http://palmcluster.org/michael/rdf-sesame.rdf', 
+            uri    => 'http://www.ndrix.com/rdf-sesame.rdf', 
             format => 'rdfxml'
         );
     },

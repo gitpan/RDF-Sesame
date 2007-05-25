@@ -1,4 +1,4 @@
-use Test::More tests => 51;
+use Test::More tests => 57;
 
 my $debug = $ENV{DEBUG};
 
@@ -7,8 +7,8 @@ BEGIN { use_ok('RDF::Sesame'); }
 SKIP: {
     my $uri    = $ENV{SESAME_URI};
     my $r_name = $ENV{SESAME_REPO};
-    skip 'SESAME_URI environment not set', 50  unless $uri;
-    skip 'SESAME_REPO environment not set', 50 unless $r_name;
+    skip 'SESAME_URI environment not set', 56  unless $uri;
+    skip 'SESAME_REPO environment not set', 56 unless $r_name;
 
     my $conn = RDF::Sesame->connect( uri => $uri );
 
@@ -88,7 +88,7 @@ SKIP: {
 
     # don't verify data and specify the base
     $c = $repo->upload_uri(
-        uri=>'http://palmcluster.org/michael/small.rdf',
+        uri=>'http://www.ndrix.com/small.rdf',
         verify => 0,
         base => 'http://example.com/',
     );
@@ -106,17 +106,37 @@ SKIP: {
     $c = $fake_repo->clear;
     is($c, '', 'network error with clear');
 
+    # try a large (more than 1,000 triples), local upload
+    require_ok('LWP::Simple');
+    $repo->clear;
+    $c = $repo->upload_uri(
+        uri    => 'file:t/random-large.ttl', 
+        format => 'turtle'
+    );
+    cmp_ok($c, '==', 1234, 'uploaded local random-large.ttl');
+    is($repo->errstr, '', '  no error message');
+
+    # try a large (more than 1,000 triples), remote upload
+    $repo->clear;
+    $c = $repo->upload_uri(
+        uri    => 'http://www.ndrix.com/random-large.ttl', 
+        format => 'turtle'
+    );
+    cmp_ok($c, '==', 1234, 'uploaded remote random-large.ttl');
+    is($repo->errstr, '', '  no error message');
+
+
     # try a real, remote upload
     $repo->clear;
     $c = $repo->upload_uri(
-        uri    => 'http://palmcluster.org/michael/rdf-sesame.rdf', 
+        uri    => 'http://www.ndrix.com/rdf-sesame.rdf', 
         format => 'rdfxml'
     );
     cmp_ok($c, '==', 48, 'uploaded remote foaf.rdf');
     is($repo->errstr, '', '  no error message');
 
     $c = $repo->upload_uri(
-        uri    => 'http://palmcluster.org/michael/rdf-sesame.rdf', 
+        uri    => 'http://www.ndrix.com/rdf-sesame.rdf', 
         format => 'A BAD FORMAT'
     );
     cmp_ok($c, '==', 0, 'upload with a bad type');
@@ -133,7 +153,14 @@ SKIP: {
     isnt($repo->errstr, '', '  got error message');
     diag($repo->errstr) if $debug;
 
-    require_ok('LWP::Simple');
+    $c = $repo->upload_uri(
+        uri         => 'file:fooishness-testing.rdf',
+        server_file => 1,
+    );
+    cmp_ok($c, '==', 0, 'upload bad RDF from server-side URI');
+    isnt($repo->errstr, '', '  got error message');
+    diag($repo->errstr) if $debug;
+
     $c = $repo->upload_uri( 'file:t/dc.rdf' );
     cmp_ok($c, '==', 146, 'uploading with file: scheme');
     is($repo->errstr, '', '  no error message');
