@@ -7,7 +7,7 @@ use RDF::Sesame::Connection;
 use RDF::Sesame::Response;
 use RDF::Sesame::TableResult;
 
-our $VERSION = "0.16";
+our $VERSION = "0.17";
 our $errstr;  # holds the error string from a failed connect
 
 =head1 NAME
@@ -209,13 +209,13 @@ Test coverage results provided by L<Devel::Cover>
  Total                                 96.2   92.2  100.0  100.0  100.0   95.4
  ----------------------------------- ------ ------ ------ ------ ------ ------
 
-=head1 DEPENDENCIES
- 
-A list of all the other modules that this module relies upon, including any
-restrictions on versions, and an indication whether these required modules are
-part of the standard Perl distribution, part of the module's distribution,
-or must be installed separately.
- 
+=head1 HELPING OUT
+
+The latest source code for RDF-Sesame is available with git from
+L<git://ndrix.com/RDF-Sesame>.  You may also browse the repository
+at L<http://git.ndrix.com/?p=RDF-Sesame;a=summary>.
+
+Please email patches to the author.
 
 =head1 SEE ALSO
 

@@ -2,19 +2,19 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-          'PL_FILES' => {},
-          'INSTALLDIRS' => 'site',
           'NAME' => 'RDF::Sesame',
-          'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/RDF/Sesame.pm',
           'PREREQ_PM' => {
+                           'Carp' => '0',
+                           'Data::Table' => '0',
+                           'LWP::UserAgent' => '0',
                            'Test::More' => '0.31',
-                           'URI' => 0,
-                           'LWP::UserAgent' => 0,
-                           'XML::Simple' => 0,
-                           'Time::HiRes' => 0,
-                           'Data::Table' => 0,
-                           'Carp' => 0
-                         }
+                           'Time::HiRes' => '0',
+                           'URI' => '0',
+                           'XML::Simple' => '0'
+                         },
+          'INSTALLDIRS' => 'site',
+          'EXE_FILES' => [],
+          'PL_FILES' => {}
         )
 ;

@@ -1,6 +1,7 @@
 use Test::More;
-
-BEGIN { use_ok('RDF::Sesame'); }
+use strict;
+use warnings;
+no warnings 'once';  # because of $RDF::Sesame::errstr
 
 # do we have info about the testing server?
 my $uri    = $ENV{SESAME_URI};
@@ -16,7 +17,7 @@ my $conn = RDF::Sesame->connect( uri => $uri )
     or plan skip_all => "Connection failure for $uri: $RDF::Sesame::errstr";
 
 # we can finally set our plan
-plan tests => 8;
+plan tests => 7;
 $ENV{RDFSESAME_DEBUG} = 1;
 
 # None of these should generate output

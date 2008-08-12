@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use XML::Simple;
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 # simple accessors
 sub errstr        { return $_[0]->{error}   }
